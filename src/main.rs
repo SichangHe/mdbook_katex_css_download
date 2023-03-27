@@ -62,3 +62,13 @@ async fn main() {
         task.await.expect("a task failed");
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::main;
+
+    #[test]
+    fn test() {
+        main()
+    }
+}

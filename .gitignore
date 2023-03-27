@@ -1,3 +1,5 @@
 **.DS_Store
 **desktop.ini
 /target
+katex.min.css
+theme/
