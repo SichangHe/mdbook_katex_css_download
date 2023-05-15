@@ -1,6 +1,6 @@
 [package]
 name = "mdbook_katex_css_download"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Steven Hé (Sīchàng) <stevensichanghe@gmail.com>"]
 edition = "2021"
 description = "Executable to download static CSS and fonts for mdbook-katex"
@@ -12,9 +12,9 @@ repository = "https://github.com/SichangHe/mdbook_katex_css_download"
 
 [dependencies]
 bytes = "1.4"
-regex = "1.7"
+regex = "1.8"
 reqwest = "0.11"
-tokio = { version = "1.27", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.28", features = ["macros", "rt-multi-thread"] }
 
 [profile.release]
 lto = true
