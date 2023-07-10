@@ -402,7 +402,7 @@ checksum = "b06a4cde4c0f271a446782e3eff8de789548ce57dbc8eca9292c27f4a42004b4"
 
 [[package]]
 name = "mdbook_katex_css_download"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "bytes",
  "regex",
