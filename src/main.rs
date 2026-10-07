@@ -10,7 +10,8 @@ use reqwest::IntoUrl;
 use tokio::spawn;
 
 static THEME_PATH: &str = "theme/";
-static CDN_ROOT: &str = "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/";
+// 🧑 “... other mdbook_* repos of mine to track the latest mdbook version ...”
+static CDN_ROOT: &str = "https://cdn.jsdelivr.net/npm/katex@0.18.5/dist/";
 static KATEX_CSS_PATH: &str = "katex.min.css";
 
 fn write_file_bytes(filename: &str, bytes: &[u8]) {
