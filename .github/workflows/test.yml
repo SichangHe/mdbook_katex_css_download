@@ -95,7 +95,7 @@ jobs:
         run: cargo fmt -- --check
 
       - name: clippy
-        run: RUSTFLAGS="-Dwarnings" cargo clippy
+        run: RUSTFLAGS="-Dwarnings" cargo clippy --locked
 
       - name: check Cargo.lock
-        run: cargo update --locked
+        run: cargo metadata --locked --format-version 1 > /dev/null
