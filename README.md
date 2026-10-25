@@ -1,6 +1,10 @@
 # `mdbook-katex` CSS Download
+(authored by human unless marked 🤖)
 
 Executable to download static CSS and fonts for `mdbook-katex`.
+
+🤖 Downloads KaTeX 0.16.4 to match the renderer bundled with mdbook-katex.
+The CSS and renderer versions must match; newer CSS can break formula layout.
 
 [Self-host KaTeX CSS and fonts](https://github.com/lzanini/mdbook-katex#self-host-katex-css-and-fonts).
 
