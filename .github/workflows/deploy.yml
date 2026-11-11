@@ -207,6 +207,9 @@ jobs:
 
     needs: [msvc-windows-binary, gnu-linux-binary, musl-linux-binary, x86_64-macos-binary, aarch64-macos-binary]
 
+    permissions:
+      contents: write
+
     runs-on: ubuntu-22.04
 
     steps:
