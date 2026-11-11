@@ -35,7 +35,7 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: ${{
+          toolchain: ${{ matrix.rust }}
 
       - uses: Swatinem/rust-cache@v2
 
