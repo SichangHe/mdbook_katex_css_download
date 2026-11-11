@@ -11,19 +11,14 @@ jobs:
 
     runs-on: windows-latest
 
-    env:
-      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install stable
-      uses: actions-rs/toolchain@v1
+      uses: dtolnay/rust-toolchain@master
       with:
-        profile: minimal
         toolchain: stable
-        target: x86_64-pc-windows-msvc
-        override: true
+        targets: x86_64-pc-windows-msvc
 
     - uses: Swatinem/rust-cache@v2
 
@@ -36,7 +31,7 @@ jobs:
       id: tagName
       run: |
         VERSION=$(cargo pkgid | cut -d# -f2 | cut -d: -f2)
-        echo "::set-output name=version::$VERSION"
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
     - name: Create zip
       run: |
@@ -45,8 +40,9 @@ jobs:
              "./target/release/mdbook_katex_css_download.exe"
 
     - name: Upload binary artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
+        name: ${{ github.job }}
         path: mdbook_katex_css_download-v${{ steps.tagName.outputs.version }}-x86_64-pc-windows-msvc.zip
 
   gnu-linux-binary:
@@ -54,15 +50,13 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install x86_64-unknown-linux-gnu target
-      uses: actions-rs/toolchain@v1
+      uses: dtolnay/rust-toolchain@master
       with:
-        profile: minimal
         toolchain: stable
-        target: x86_64-unknown-linux-gnu
-        override: true
+        targets: x86_64-unknown-linux-gnu
 
     - uses: Swatinem/rust-cache@v2
 
@@ -74,7 +68,7 @@ jobs:
       id: tagName
       run: |
         VERSION=$(cargo pkgid | cut -d# -f2 | cut -d: -f2)
-        echo "::set-output name=version::$VERSION"
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
     - name: Create tar
       run: |
@@ -84,8 +78,9 @@ jobs:
                   mdbook_katex_css_download
 
     - name: Upload binary artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
+        name: ${{ github.job }}
         path: |
           Cargo.lock
           mdbook_katex_css_download-v${{ steps.tagName.outputs.version }}-x86_64-unknown-linux-gnu.tar.gz
@@ -95,32 +90,27 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install x86_64-unknown-linux-musl
-      uses: actions-rs/toolchain@v1
+      uses: dtolnay/rust-toolchain@master
       with:
-        profile: minimal
         toolchain: stable
-        target: x86_64-unknown-linux-musl
-        override: true
+        targets: x86_64-unknown-linux-musl
 
     - uses: Swatinem/rust-cache@v2
 
-    - uses: actions-rs/cargo@v1
+    - uses: taiki-e/install-action@v2
       with:
-        use-cross: true
-        command: build
-        args: |
-          --release
-          --features native-tls-vendored
-          --target x86_64-unknown-linux-musl
+        tool: cross
+
+    - run: cross build --release --features native-tls-vendored --target x86_64-unknown-linux-musl
 
     - name: Get the version
       id: tagName
       run: |
         VERSION=$(cargo pkgid | cut -d# -f2 | cut -d: -f2)
-        echo "::set-output name=version::$VERSION"
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
     - name: Create tar
       run: |
@@ -130,8 +120,9 @@ jobs:
                   mdbook_katex_css_download
 
     - name: Upload binary artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
+        name: ${{ github.job }}
         path: |
           mdbook_katex_css_download-v${{ steps.tagName.outputs.version }}-x86_64-unknown-linux-musl.tar.gz
 
@@ -140,38 +131,37 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install stable-x86_64-apple-darwin
-      uses: actions-rs/toolchain@v1
+      uses: dtolnay/rust-toolchain@master
       with:
-        profile: minimal
         toolchain: stable
-        target: x86_64-apple-darwin
-        override: true
+        targets: x86_64-apple-darwin
 
     - uses: Swatinem/rust-cache@v2
 
     - name: Build x86_64-apple-darwin
       run: |
-        cargo build --release
+        cargo build --release --target=x86_64-apple-darwin
 
     - name: Get the version
       id: tagName
       run: |
         VERSION=$(cargo pkgid | cut -d# -f2 | cut -d: -f2)
-        echo "::set-output name=version::$VERSION"
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
     - name: Create tar for x86_64-apple-darwin
       run: |
-        mv target/release/mdbook_katex_css_download mdbook_katex_css_download
+        mv target/x86_64-apple-darwin/release/mdbook_katex_css_download mdbook_katex_css_download
         TAR_PREFIX=mdbook_katex_css_download-v${{ steps.tagName.outputs.version }}
         tar -czvf $TAR_PREFIX-x86_64-apple-darwin.tar.gz \
                   mdbook_katex_css_download
 
     - name: Upload binary artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
+        name: ${{ github.job }}
         path: |
           mdbook_katex_css_download-v${{ steps.tagName.outputs.version }}-x86_64-apple-darwin.tar.gz
   aarch64-macos-binary:
@@ -179,15 +169,13 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install stable-aarch64-apple-darwin
-      uses: actions-rs/toolchain@v1
+      uses: dtolnay/rust-toolchain@master
       with:
-        profile: minimal
         toolchain: stable
-        target: aarch64-apple-darwin
-        override: true
+        targets: aarch64-apple-darwin
 
     - uses: Swatinem/rust-cache@v2
 
@@ -199,7 +187,7 @@ jobs:
       id: tagName
       run: |
         VERSION=$(cargo pkgid | cut -d# -f2 | cut -d: -f2)
-        echo "::set-output name=version::$VERSION"
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
     - name: Create tar for aarch64-apple-darwin
       run: |
@@ -209,8 +197,9 @@ jobs:
                   mdbook_katex_css_download
 
     - name: Upload binary artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
+        name: ${{ github.job }}
         path: |
           mdbook_katex_css_download-v${{ steps.tagName.outputs.version }}-aarch64-apple-darwin.tar.gz
 
@@ -221,28 +210,26 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Download artifacts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
-        name: artifact
+        merge-multiple: true
 
     - name: Install Rust stable
-      uses: actions-rs/toolchain@v1
+      uses: dtolnay/rust-toolchain@master
       with:
-        profile: minimal
         toolchain: stable
-        override: true
 
     - name: Get the version
       id: tagName
       run: |
         VERSION=$(cargo pkgid | cut -d# -f2 | cut -d: -f2)
-        echo "::set-output name=version::$VERSION"
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
     - name: Create a release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         name: v${{ steps.tagName.outputs.version }}
         files: |
