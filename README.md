@@ -1,6 +1,11 @@
 # `mdbook-katex` CSS Download
+(authored by human unless marked 🤖)
 
 Executable to download static CSS and fonts for `mdbook-katex`.
+
+🤖 Defaults to KaTeX 0.16.4 for released mdbook-katex. Set `KATEX_VERSION`
+to match your renderer; the katex-rs migration uses KaTeX 0.18.5.
+The CSS and renderer versions must match; newer CSS can break formula layout.
 
 [Self-host KaTeX CSS and fonts](https://github.com/lzanini/mdbook-katex#self-host-katex-css-and-fonts).
 
@@ -14,6 +19,8 @@ Executable to download static CSS and fonts for `mdbook-katex`.
 
 1. `cd` to the root of your mdBook project.
 1. Run `mdbook_katex_css_download`.
+   🤖 For the katex-rs migration, run
+   `KATEX_VERSION=0.18.5 mdbook_katex_css_download` instead.
 1. If you see no error, you are good to go.
     If it panics and the first error message suggests connection failure,
     it might just be a network problem, try again.
